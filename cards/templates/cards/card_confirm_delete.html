@@ -1,0 +1,18 @@
+{% extends "cards/base.html" %}
+{% load humanize %}
+
+{% block content %}
+<h1 align = "center">Delete Card</h1>
+<p align = "center">Are you sure about that</p>
+<form method="post">
+  {% csrf_token %}
+  <div>
+    <span style = "position: relative; left: 250px;">
+      <button type="submit">Yeah</button>
+    </span>
+    <span style = "position: relative; left: 350px;">
+      <a href="{% url 'card-list' %}"><button>Nah</button></a>
+    </span>
+  </div>
+</form>
+{% endblock content %}

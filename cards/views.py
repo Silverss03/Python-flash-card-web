@@ -28,6 +28,11 @@ class CardCreateView(CreateView):
 class CardUpdateView(CardCreateView, UpdateView):
     success_url = reverse_lazy("card-list")
 
+class CardDeleteView(DeleteView):
+    model = Card
+    template_name = "cards/card_confirm_delete.html"
+    success_url = reverse_lazy("card-list")
+
 
 class BoxView(CardListView):
     template_name = "cards/box.html"
@@ -50,5 +55,6 @@ class BoxView(CardListView):
             if(str(form.cleaned_data["ans"]).lower() == card.answer.lower().strip()):
                 form.cleaned_data["solved"] = True
                 card.move(form.cleaned_data["solved"]) 
-                       
+            else:
+                card.move(form.cleaned_data["solved"])            
         return redirect(request.META.get("HTTP_REFERER"))

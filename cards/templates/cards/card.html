@@ -6,6 +6,11 @@
         <a href="{% url 'card-update' card.id %}" role="button" style="background-color: purple;">
             ✏️ Edit Card
         </a>
+        <a href="{% url 'card-delete' card.id %}" role="button" style="float: right">
+            <button>
+                🗑️​ Delete Card
+            </button>
+        </a>
     {% else %}
         <hr/>       
             {% include "cards/card_check_form.html" %}
