@@ -18,9 +18,9 @@ class Card(models.Model):
 
     def move(self, solved):
         new_box = self.box + 1 if solved else BOXES[0]
-
+        print(new_box)
         if new_box in BOXES:
-            self.box = new_box
-            self.save()
+                self.box = new_box
+                self.save()
 
         return self
