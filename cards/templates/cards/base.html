@@ -54,8 +54,10 @@
 
 <body>
     <header>
+        {%block title%}
         <h1>Flashcards App</h1>
         {% include "cards/navigation.html" %}
+        {%endblock%}
     </header>
     <main>
         {% block content %}

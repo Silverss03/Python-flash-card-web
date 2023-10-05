@@ -1,8 +1,11 @@
 import random
-
+from typing import Any
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from django.views.generic import (
     ListView,
     CreateView,
@@ -11,9 +14,18 @@ from django.views.generic import (
 )
 
 from .forms import CardCheckForm
+from .forms import RegisterForm
 from .models import Card
 
-
+class UserRegistrationView(CreateView):
+    form_class = RegisterForm
+    template_name = 'registration/sign_up.html'
+    def post(self, request, *args: str, **kwargs: Any) :
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+        return redirect(reverse_lazy("card-list"))
 class CardListView(ListView):
     model = Card
     queryset = Card.objects.all().order_by("box", "-date_created")
@@ -46,7 +58,7 @@ class BoxView(CardListView):
         if self.object_list:
             context["check_card"] = random.choice(self.object_list)
         return context
-
+    
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         
