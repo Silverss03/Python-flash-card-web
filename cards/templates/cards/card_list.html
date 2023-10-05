@@ -5,8 +5,10 @@
     <h2>
         All Cards
     </h2>
-    <a href="{% url 'card-create' %}" role="button" style="background-color: purple;">
-        ✨ Create New Card
+    <a href="{% url 'card-create' %}"  style="background-color: purple;">
+        <button>
+            ✨ Create New Card
+        </button>
     </a>
     {% for card in card_list %}
         {% ifchanged %}
