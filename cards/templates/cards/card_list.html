@@ -3,16 +3,16 @@
 
 {% block content %}
     <h2>
-        All Cards
+        Tất cả Thẻ
     </h2>
-    <a href="{% url 'card-create' %}"  style="background-color: purple;">
-        <button>
-            ✨ Create New Card
-        </button>
-    </a>
+    <div class="container">
+        <a id="new-card-button" href="{% url 'card-create' %}" role="button">
+            ☝️🤓 Tạo thẻ mới
+        </a>
+    </div>
     {% for card in card_list %}
         {% ifchanged %}
-            <h3>🗃 {{ card.box | ordinal }} Box</h3>
+            <h3>📦 {{ card.box | ordinal }} Box</h3>
         {% endifchanged %}
         {% include "cards/card.html" %}
     {% endfor %}

@@ -35,6 +35,9 @@ class CardCreateView(CreateView):
     model = Card
     fields = ["question", "answer", "box"]
     success_url = reverse_lazy("card-create")
+    def form_valid(self, form):
+        messages.success(self.request, "Updated Successfully")
+        return super().form_valid(form)
 
 
 class CardUpdateView(CardCreateView, UpdateView):

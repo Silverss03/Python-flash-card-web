@@ -1,6 +1,18 @@
 {% load cards_tags %}
 
 <nav>
-    <a href="{% url 'card-list' %}">🗂 All Cards</a>
+    <a href="{% url 'card-list' %}">🗂 Tất cả Thẻ</a>
+    <ul class = "navbar-nav">
+        {% if user.is_authenticated%}
+        <span class = "navbar-text"> Logged in as {{user.username}} | </span>
+        <li class = "nav-item">
+            <a class = "nav-link" href = "/logout"> Logout </a>
+        </li>
+        {%else%}
+        <li class = "nav-item">
+            <a class = "nav-link" href = "/login"> Login </a>
+        </li>
+        {%endif%}
+    </ul>
     {% boxes_as_links %}
 </nav>

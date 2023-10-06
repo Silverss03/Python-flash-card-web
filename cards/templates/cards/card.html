@@ -3,17 +3,16 @@
     {% if not check_card %}
         <p>{{ card.answer }}</p>
         <hr/>
-        <a href="{% url 'card-update' card.id %}" style="background-color: purple;">
-            <button>
-                ✏️ Edit Card
-            </button>
-        </a>
-        <a href="{% url 'card-delete' card.id %}" style="float: right">
-            <button>
-                🗑️​ Delete Card
-            </button>
-        </a>
+        <div class="container-card">
+            <a class="edit-card" href="{% url 'card-update' card.id %}" role="button">
+                ✏️ Sửa thẻ
+            </a>
+            <a href="{% url 'card-delete' card.id %}" role="button">
+                    🗑️​ Delete Card
+            </a>
+        </div>
     {% else %}
+    
         <hr/>       
             {% include "cards/card_check_form.html" %}
     {% endif %}
