@@ -35,10 +35,8 @@ class CardCreateView(CreateView):
     model = Card
     fields = ["question", "answer", "box", "image"]
     success_url = reverse_lazy("card-create")
-    # def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
-    #     return super().post(request.POST, request.FILES, *args, **kwargs)
     def form_valid(self, form):
-        messages.success(self.request, "Updated Successfully")
+        messages.success(self.request, "Updated Successfully",extra_tags='update')
         return super().form_valid(form)
 
 
@@ -79,9 +77,9 @@ class BoxView(CardListView):
                 def_ans+= i + " "
             if(ans.strip() == def_ans.strip()):
                 form.cleaned_data["solved"] = True
-                messages.success(self.request, "Correct answer")
+                messages.success(self.request, "Correct answer",extra_tags='correct_ans')
                 card.move(form.cleaned_data["solved"]) 
             else:
-                messages.success(self.request, "Wrong answer!!")
+                messages.success(self.request, "Wrong answer!!",extra_tags='wrong_ans')
                 card.move(form.cleaned_data["solved"])            
         return redirect(request.META.get("HTTP_REFERER"))
