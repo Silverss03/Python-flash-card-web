@@ -1,14 +1,17 @@
 <article>
     <h4>{{ card.question }}</h4>
+    {%if card.image %}
+        <img src="{{ card.image.url }}" alt="img">
+    {%endif%}
     {% if not check_card %}
         <p>{{ card.answer }}</p>
         <hr/>
         <div class="container-card">
             <a class="edit-card" href="{% url 'card-update' card.id %}" role="button">
-                ✏️ Sửa thẻ
+                ✏️ Edit card
             </a>
             <a href="{% url 'card-delete' card.id %}" role="button">
-                    🗑️​ Delete Card
+                    🗑️​ Delete card
             </a>
         </div>
     {% else %}

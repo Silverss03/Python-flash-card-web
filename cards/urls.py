@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 
+
 urlpatterns = [
     path("", views.CardListView.as_view(), name="card-list"),
     path("new", views.CardCreateView.as_view(), name="card-create"),
@@ -10,3 +11,4 @@ urlpatterns = [
     path("delete/<int:pk>", views.CardDeleteView.as_view(), name = "card-delete"),
     path("sign_up", views.UserRegistrationView.as_view(), name = "register")
 ]
+

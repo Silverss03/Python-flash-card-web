@@ -25,7 +25,7 @@ class UserRegistrationView(CreateView):
         if form.is_valid():
             user = form.save()
             login(request, user)
-        return redirect(reverse_lazy("card-list"))
+        return redirect(reverse_lazy("card-list")) 
 class CardListView(ListView):
     model = Card
     queryset = Card.objects.all().order_by("box", "-date_created")
@@ -33,8 +33,10 @@ class CardListView(ListView):
 
 class CardCreateView(CreateView):
     model = Card
-    fields = ["question", "answer", "box"]
+    fields = ["question", "answer", "box", "image"]
     success_url = reverse_lazy("card-create")
+    # def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+    #     return super().post(request.POST, request.FILES, *args, **kwargs)
     def form_valid(self, form):
         messages.success(self.request, "Updated Successfully")
         return super().form_valid(form)
@@ -67,9 +69,19 @@ class BoxView(CardListView):
         
         if form.is_valid():
             card = get_object_or_404(Card, id=form.cleaned_data["card_id"])
-            if(str(form.cleaned_data["ans"]).lower() == card.answer.lower().strip()):
+            arr = str(form.cleaned_data["ans"]).lower().strip().split()
+            ans = ""
+            for i in arr :
+                ans += i + " "
+            arr2 = card.answer.lower().strip().split()
+            def_ans = ""
+            for i in arr2 :
+                def_ans+= i + " "
+            if(ans.strip() == def_ans.strip()):
                 form.cleaned_data["solved"] = True
+                messages.success(self.request, "Correct answer")
                 card.move(form.cleaned_data["solved"]) 
             else:
+                messages.success(self.request, "Wrong answer!!")
                 card.move(form.cleaned_data["solved"])            
         return redirect(request.META.get("HTTP_REFERER"))

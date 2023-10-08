@@ -3,11 +3,11 @@
 
 {% block content %}
     <h2>
-        Tất cả Thẻ
+        All cards
     </h2>
     <div class="container">
         <a id="new-card-button" href="{% url 'card-create' %}" role="button">
-            ☝️🤓 Tạo thẻ mới
+            ☝️🤓 Create new card
         </a>
     </div>
     {% for card in card_list %}

@@ -1,7 +1,7 @@
 {% load cards_tags %}
 
 <nav>
-    <a href="{% url 'card-list' %}">🗂 Tất cả Thẻ</a>
+    <a href="{% url 'card-list' %}">🗂 All cards</a>
     <ul class = "navbar-nav">
         {% if user.is_authenticated%}
         <span class = "navbar-text"> Logged in as {{user.username}} | </span>
