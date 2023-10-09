@@ -15,7 +15,10 @@
             </a>
         </div>
     {% else %}
-    
+        <details>
+            <summary>Reveal Answer</summary>
+            <p>{{ card.answer }}</p>
+        </details>
         <hr/>       
             {% include "cards/card_check_form.html" %}
     {% endif %}

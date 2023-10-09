@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 NUM_BOXES = 5
 BOXES = range(1, NUM_BOXES + 1)
 

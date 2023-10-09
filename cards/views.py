@@ -1,10 +1,9 @@
 import random
 from typing import Any
-from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout, authenticate
 from django.views.generic import (
     ListView,
@@ -26,7 +25,9 @@ class UserRegistrationView(CreateView):
             user = form.save()
             login(request, user)
         return redirect(reverse_lazy("card-list")) 
-class CardListView(ListView):
+class CardListView(LoginRequiredMixin,ListView):
+    login_url = 'login/'
+    redirect_field_name = 'redirect_to'
     model = Card
     queryset = Card.objects.all().order_by("box", "-date_created")
 
@@ -38,7 +39,6 @@ class CardCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, "Updated Successfully",extra_tags='update')
         return super().form_valid(form)
-
 
 class CardUpdateView(CardCreateView, UpdateView):
     success_url = reverse_lazy("card-list")
