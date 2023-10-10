@@ -42,7 +42,8 @@ DEBUG = os.getenv("IS_DEVELOPMENT", True)
 
 ALLOWED_HOSTS = [
     #os.getenv("APP_HOST")
-    '.vercel.app'
+    '.vercel.app',
+    '.now.sh'
 ]
 
 
@@ -101,10 +102,10 @@ WSGI_APPLICATION = 'flashcards.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
 }
 
 
@@ -142,7 +143,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
