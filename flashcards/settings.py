@@ -34,17 +34,12 @@ MEDIA_URL = '/media/'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
-#'django-insecure-wsr1z!c7i=o=zktrxq^d$*622%z0dxo-p=b(+v12-8bc#7c^id'
+SECRET_KEY = 'django-insecure-wsr1z!c7i=o=zktrxq^d$*622%z0dxo-p=b(+v12-8bc#7c^id'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("IS_DEVELOPMENT", True)  
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    #os.getenv("APP_HOST")
-    '.vercel.app',
-    '.now.sh'
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -102,10 +97,10 @@ WSGI_APPLICATION = 'flashcards.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 
@@ -143,13 +138,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-MEDIA_ROOT = (BASE_DIR)
-MEDIA_URL = "/files/"
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -157,4 +146,4 @@ MEDIA_URL = "/files/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/'

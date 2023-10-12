@@ -53,18 +53,15 @@
 </style>
 
 <body>
-    <header>
-        {%block title%} 
-        Login 
-        {%endblock%}
-    </header>
-    <main>
-        {%load crispy_forms_tags%}
-        {% block content %}
-        <h1>The password has been changed!</h1>
-        <p><a href="{% url 'login' %}">log in again?</a></p>
-      {% endblock %}
-    </main>
+    <form action="/sign_in" method="post">
+    {% csrf_token %}
+        <label for="">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" Required>
+        <br>
+        <label for="">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" Required>
+        <br>
+        <p> Don't have an account? Create one <a href = "/sign_up"> Here</a>!</p>
+        <button type="submit">Sign In</button>
+    </form>
 </body>
-
-</html>

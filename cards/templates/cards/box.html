@@ -6,17 +6,6 @@
     <mark>{{ object_list | length }}</mark> Card{{ object_list | pluralize }} left in box.
     <hr/>
     {% if check_card %}
-    {% for message in messages  %}        
-        {%if "correct_ans" in message.tags %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Hey! </strong>{{message}}
-            </div>
-        {%else %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Hey! </strong>{{message}}
-            </div>
-        {%endif%}
-    {% endfor %}
-        {% include "cards/card.html" with card=check_card %}
+    {% include "cards/card.html" with card=check_card %}
     {% endif %}
 {% endblock content %}

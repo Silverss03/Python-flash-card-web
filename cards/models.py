@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 NUM_BOXES = 5
 BOXES = range(1, NUM_BOXES + 1)
 
@@ -7,7 +8,7 @@ BOXES = range(1, NUM_BOXES + 1)
 class Card(models.Model):
     question = models.CharField(max_length=100)
     answer = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/', blank= True)
+    image = models.ImageField(upload_to='uploads/images/', blank= True)
     box = models.IntegerField(
         choices=zip(BOXES, BOXES),
         default=BOXES[0],
@@ -24,3 +25,8 @@ class Card(models.Model):
                 self.save()
 
         return self
+
+
+class UserCard(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)

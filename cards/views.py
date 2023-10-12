@@ -1,37 +1,65 @@
 import random
-from typing import Any
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
     CreateView,
     UpdateView,
     DeleteView,
 )
+from django.contrib.auth.decorators import login_required
 
 from .forms import CardCheckForm
-from .forms import RegisterForm
 from .models import Card
 
-class UserRegistrationView(CreateView):
-    form_class = RegisterForm
-    template_name = 'registration/sign_up.html'
-    def post(self, request, *args: str, **kwargs: Any) :
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            user = form.save()
+
+def sign_up(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        myuser = User.objects.create_user(username, email, password)
+
+        myuser.save()
+
+        messages.success(request, "Your account has been successfully created!")
+
+        return redirect("card-list")
+    return render(request, "registration/sign_up.html")
+    
+def sign_in(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username = username, password = password)
+
+        if user is not None:
             login(request, user)
-        return redirect(reverse_lazy("card-list")) 
-class CardListView(LoginRequiredMixin,ListView):
-    login_url = 'login/'
-    redirect_field_name = 'redirect_to'
+            return render(request, "cards/base.html")
+        else:
+            messages.error(request, "Da Fuck Wut?")
+            return redirect('card-list')
+    return render(request, "registration/sign_in.html")
+
+def sign_out(request):
+    logout(request)
+    messages.success(request, 'Logged out successfully')
+    return redirect("card-list")
+    
+
+# @login_required
+class CardListView(ListView):
     model = Card
     queryset = Card.objects.all().order_by("box", "-date_created")
 
 
+# @login_required
 class CardCreateView(CreateView):
     model = Card
     fields = ["question", "answer", "box", "image"]
@@ -39,16 +67,21 @@ class CardCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, "Updated Successfully",extra_tags='update')
         return super().form_valid(form)
+    
 
+# @login_required
 class CardUpdateView(CardCreateView, UpdateView):
     success_url = reverse_lazy("card-list")
 
+
+# @login_required
 class CardDeleteView(DeleteView):
     model = Card
     template_name = "cards/card_confirm_delete.html"
     success_url = reverse_lazy("card-list")
 
 
+# @login_required
 class BoxView(CardListView):
     template_name = "cards/box.html"
     form_class = CardCheckForm 
