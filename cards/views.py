@@ -1,4 +1,6 @@
 import random
+from typing import Any
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -10,7 +12,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CardCheckForm
 from .models import Card
@@ -54,43 +56,52 @@ def sign_out(request):
     
 
 # @login_required
-class CardListView(ListView):
+class CardListView(LoginRequiredMixin,ListView):
     model = Card
-    queryset = Card.objects.all().order_by("box", "-date_created")
+    def get_queryset(self) :
+        return Card.objects.filter(user = self.request.user).order_by("box", "-date_created")
 
 
 # @login_required
-class CardCreateView(CreateView):
+class CardCreateView(LoginRequiredMixin,CreateView):
     model = Card
     fields = ["question", "answer", "box", "image"]
     success_url = reverse_lazy("card-create")
     def form_valid(self, form):
-        messages.success(self.request, "Updated Successfully",extra_tags='update')
+        form.instance.user = self.request.user
         return super().form_valid(form)
     
 
 # @login_required
-class CardUpdateView(CardCreateView, UpdateView):
+class CardUpdateView(CardCreateView, UpdateView, LoginRequiredMixin):
     success_url = reverse_lazy("card-list")
+    def get_queryset(self) :
+        return Card.objects.filter(user = self.request.user)
+    
 
 
 # @login_required
-class CardDeleteView(DeleteView):
+class CardDeleteView(DeleteView,LoginRequiredMixin):
     model = Card
     template_name = "cards/card_confirm_delete.html"
     success_url = reverse_lazy("card-list")
 
 
 # @login_required
-class BoxView(CardListView):
+class BoxView(CardListView,LoginRequiredMixin):
     template_name = "cards/box.html"
     form_class = CardCheckForm 
     def get_queryset(self):
-        return Card.objects.filter(box=self.kwargs["box_num"])
+        return Card.objects.filter(box=self.kwargs["box_num"],user = self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["box_number"] = self.kwargs["box_num"]
+        box_num = self.kwargs["box_num"]
+        user_card_count = Card.objects.filter(user = self.request.user, box= box_num).count()
+        print(box_num)
+        print(user_card_count)
+        context["user_card_count"] = user_card_count
         if self.object_list:
             context["check_card"] = random.choice(self.object_list)
         return context

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class CardCheckForm(forms.Form):
     card_id = forms.IntegerField(required=True)
     solved = forms.BooleanField(required=False)
-    ans = forms.CharField(max_length= 100, label= "Your answer")
+    ans = forms.CharField(max_length= 100, label= "Your answer", required= False)
     
 class RegisterForm(UserCreationForm):   
     email = forms.EmailField(required= True)

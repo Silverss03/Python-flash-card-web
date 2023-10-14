@@ -6,6 +6,7 @@ BOXES = range(1, NUM_BOXES + 1)
 
 
 class Card(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE, null= True)
     question = models.CharField(max_length=100)
     answer = models.CharField(max_length=100)
     image = models.ImageField(upload_to='uploads/images/', blank= True)
@@ -26,7 +27,3 @@ class Card(models.Model):
 
         return self
 
-
-class UserCard(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    card = models.ForeignKey(Card, on_delete=models.CASCADE)
