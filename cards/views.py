@@ -45,8 +45,8 @@ def sign_in(request):
             login(request, user)
             return render(request, "cards/base.html")
         else:
-            messages.error(request, "Da Fuck Wut?")
-            return redirect('card-list')
+            error_message =  "Da Fuck Wut?"
+            return render(request, "registration/sign_in.html", {"error_message": error_message})
     return render(request, "registration/sign_in.html")
 
 def sign_out(request):
