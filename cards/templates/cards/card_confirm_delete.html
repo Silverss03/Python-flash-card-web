@@ -8,11 +8,13 @@
   {% csrf_token %}
   <div>
     <span style = "position: relative; left: 250px;">
-      <button type="submit" align = "center"> Yes</button>
-    </span>
-    <span style = "position: relative; left: 350px;">
-      <a href="{% url 'card-list' %}" align = "center"><button> Nah</button></a>
+      <button type="submit">Yeah</button>
     </span>
   </div>
 </form>
+<div>
+  <span style = "position: center; left: 350px;">
+    <a href="{% url 'card-list' %}"><button>Nah</button></a>
+  </span>
+</div>
 {% endblock content %}
