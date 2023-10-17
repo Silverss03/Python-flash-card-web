@@ -77,7 +77,10 @@
                 <br>
                 <p> Already have an account? Login <a href = "sign_in"> Here</a>!</p>
                 <button type="submit">Sign Up</button>
-            </form>
+        </form>
+        {% if error_message %}
+        <p>{{error_message}}</p>
+        {% endif %}
         {%endblock%}
     </main>
 </body>
