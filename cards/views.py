@@ -11,7 +11,7 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib import messages
 from .forms import CardCheckForm
 from .models import Card
 
@@ -64,6 +64,12 @@ class CardCreateView(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy("card-create")
     def form_valid(self, form):
         form.instance.user = self.request.user
+        while True:
+            if self.object:
+                break
+            else:
+                messages.info(self.request, "Created Successfully")
+                break
         return super().form_valid(form)
 
 class CardUpdateView(CardCreateView, UpdateView, LoginRequiredMixin):

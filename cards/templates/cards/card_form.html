@@ -3,6 +3,13 @@
     {% if card %}
         <h2>✏️ Edit card</h2>
     {% else %}
+        {% for message in messages  %}
+            {%if "info" in message.tags %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Hey! </strong>{{message}}
+                </div>
+            {%endif%}
+        {% endfor %}
         <h2>🤓 Create new card</h2>
     {% endif %}
     <form method="post" enctype="multipart/form-data">
