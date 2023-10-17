@@ -10,9 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
-
+from django.contrib import messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -145,3 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/sign_in'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+MESSAGE_TAGS ={
+    messages.SUCCESS:"success",
+    messages.INFO:"info",
+}
