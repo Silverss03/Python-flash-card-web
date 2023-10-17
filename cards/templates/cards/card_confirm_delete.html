@@ -2,19 +2,16 @@
 {% load humanize %}
 
 {% block content %}
-<h1 align = "center">Delete Card</h1>
-<p align = "center">Are you sure about that</p>
-<form method="post">
-  {% csrf_token %}
-  <div>
-    <span style = "position: relative; left: 250px;">
-      <button type="submit">Yeah</button>
-    </span>
-  </div>
-</form>
-<div>
-  <span style = "position: center; left: 350px;">
-    <a href="{% url 'card-list' %}"><button>Nah</button></a>
-  </span>
+<div style="text-align: center;">
+    <h1>Delete Card</h1>
+    <p>Are you sure about that?</p>
+
+    <div class="button-container">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Yeah</button>
+        </form>
+        <a href="{% url 'card-list' %}" class="cancel-button"><button>Nah</button></a>
+    </div>
 </div>
 {% endblock content %}

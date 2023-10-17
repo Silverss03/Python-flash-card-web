@@ -23,17 +23,18 @@ def sign_up(request):
         password = request.POST['password']
         password2 = request.POST['password2']
 
-        myuser = authenticate(username = username, password = password)
-        if myuser is not None:
-            print("user in db")
-            error_message =  "Account already created"
-            return render(request, "registration/sign_in.html", {"error_message": error_message})
-        else:
-            print("user not in db")
-            myuser = User.objects.create_user(username, email, password)
-            myuser.save()
-            login(request, myuser)
-            return redirect("card-list")
+        if password != password2:
+            error_message = "Passwords do not match."
+            return render(request, "registration/sign_up.html", {"error_message": error_message})
+
+        if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
+            error_message = "Account with this username or email already exists."
+            return render(request, "registration/sign_up.html", {"error_message": error_message})
+
+        myuser = User.objects.create_user(username, email, password)
+        myuser.save()
+        login(request, myuser)
+        return redirect("card-list")
     return render(request, "registration/sign_up.html")
     
 def sign_in(request):
@@ -43,9 +44,9 @@ def sign_in(request):
         user = authenticate(username = username, password = password)
         if user is not None:
             login(request, user)
-            return render(request, "cards/box.html")
+            return redirect("card-list")
         else:
-            error_message =  "Da Fuck Wut?"
+            error_message =  "Wrong password or user not registered"
             return render(request, "registration/sign_in.html", {"error_message": error_message})
     return render(request, "registration/sign_in.html")
 
@@ -69,6 +70,7 @@ class CardUpdateView(CardCreateView, UpdateView, LoginRequiredMixin):
     success_url = reverse_lazy("card-list")
     def get_queryset(self) :
         return Card.objects.filter(user = self.request.user)    
+    
 class CardDeleteView(DeleteView,LoginRequiredMixin):
     model = Card
     template_name = "cards/card_confirm_delete.html"
