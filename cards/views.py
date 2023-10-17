@@ -25,13 +25,21 @@ def sign_up(request):
         password = request.POST['password']
         password2 = request.POST['password2']
 
+        if password != password2:
+            error_message = "Passwords do not match."
+            return render(request, "registration/sign_up.html", {"error_message": error_message})
+
+        if User.objects.filter(username = username).exists() or User.objects.filter(email = email).exists():
+            error_message = "Account with this username or email already exists."
+            return render(request, "registration/sign_up.html", {"error_message": error_message})
+        
         myuser = User.objects.create_user(username, email, password)
-
         myuser.save()
-
-        messages.success(request, "Your account has been successfully created!")
-
-        return redirect("card-list")
+        
+        user = authenticate(username = username, password = password)        
+        login(request, user)
+        return render(request, "cards/base.html")
+        
     return render(request, "registration/sign_up.html")
     
 def sign_in(request):
@@ -45,13 +53,12 @@ def sign_in(request):
             login(request, user)
             return render(request, "cards/base.html")
         else:
-            error_message =  "Da Fuck Wut?"
+            error_message =  "Your username or password is wrong."
             return render(request, "registration/sign_in.html", {"error_message": error_message})
     return render(request, "registration/sign_in.html")
 
 def sign_out(request):
     logout(request)
-    messages.success(request, 'Logged out successfully')
     return redirect("card-list")
     
 
@@ -99,8 +106,6 @@ class BoxView(CardListView,LoginRequiredMixin):
         context["box_number"] = self.kwargs["box_num"]
         box_num = self.kwargs["box_num"]
         user_card_count = Card.objects.filter(user = self.request.user, box= box_num).count()
-        print(box_num)
-        print(user_card_count)
         context["user_card_count"] = user_card_count
         if self.object_list:
             context["check_card"] = random.choice(self.object_list)
